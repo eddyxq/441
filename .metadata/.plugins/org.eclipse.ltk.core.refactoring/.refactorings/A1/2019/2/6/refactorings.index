@@ -5,3 +5,7 @@
 1549348753678	Move compilation unit
 1549424862270	Rename local variable 'filepath'
 1549424959614	Delete element
+1549516763382	Rename local variable 'rangeOffSet'
+1549517170207	Rename local variable 'http_response_header_string'
+1549517282921	Rename local variable 'http_object_byte'
+1549517370070	Rename local variable 'http_response_header_bytes'
