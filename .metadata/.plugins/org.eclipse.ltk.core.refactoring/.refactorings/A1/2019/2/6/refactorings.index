@@ -9,3 +9,7 @@
 1549517170207	Rename local variable 'http_response_header_string'
 1549517282921	Rename local variable 'http_object_byte'
 1549517370070	Rename local variable 'http_response_header_bytes'
+1549523059356	Rename local variable 'counter'
+1549523539799	Rename local variable 'count'
+1549524109988	Rename local variable 'totalBytes'
+1549524147093	Rename local variable 'num_byte_read'

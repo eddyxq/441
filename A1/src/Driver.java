@@ -12,7 +12,7 @@ import java.io.*;
 public class Driver {
 	
 	private static String obj1 = "http://people.ucalgary.ca/~mghaderi/cpsc441/dots.txt";
-	//private static String obj2 = "http://people.ucalgary.ca/~mghaderi/cpsc441/paper.pdf";
+	private static String obj2 = "http://people.ucalgary.ca/~mghaderi/cpsc441/paper.pdf";
 	//private static String obj3 = "http://people.ucalgary.ca/~mghaderi/cpsc441/galaxy.jpg";
 	
 	private static int conn = 10;
@@ -23,7 +23,7 @@ public class Driver {
 //		System.out.println("------------\n");
 		
 		checkStatus(obj1, 1); // text object with single request
-		//checkStatus(obj2, 1); // binary object with single request
+		checkStatus(obj2, 1); // binary object with single request
 		//checkStatus(obj3, 10); // big object with multiple requests
 		
 //		System.out.println("--------------");
