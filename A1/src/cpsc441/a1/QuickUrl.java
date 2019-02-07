@@ -1,157 +1,25 @@
 package cpsc441.a1;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.net.Socket;
 
 public class QuickUrl extends ConcurrentHttp 
 {
 	public void getObject(String s) 
 	{
-		//parse URL into host, port and path name
+		//parse URL into host, port, and pathname
 		String[] parsedURL = new Parser().parseURL(s);
 		String host = parsedURL[0];
 		int port = Integer.parseInt(parsedURL[1]);
 		String pathname = parsedURL[2];
 		
-		//set up head request
-		String requestLine_1 = "HEAD " + pathname + " HTTP/1.1\r\n";
-		String requestLine_2 = "Host: " + host + "\r\n";
-		String eoh_line = "\r\n";
+		//send head request
+		int contentLength = new HeadRequest().getContentLength(pathname, port, host);
 		
-		//initialize content length
-		int contentLength = 0;
+		//send range request
+		Socket socket = new RangeRequest().send(pathname, port, host, contentLength);
 		
-		//use socket to communicate
-		try 
-		{
-			Socket socket = new Socket(host, port);
- 		
-			//send head request
-			String http_header = requestLine_1 + requestLine_2 + eoh_line;
-			byte[] http_header_in_bytes = http_header.getBytes("US-ASCII");
-			socket.getOutputStream().write(http_header_in_bytes);
- 			socket.getOutputStream().flush();
-			
- 			//read response
- 			byte[] responseBytes= new byte[2048];
- 			socket.getInputStream().read(responseBytes);
- 			String responseString = new String(responseBytes, "UTF-8");
- 			
- 			//do nothing if file not found
- 			if(responseString.contains("404 NOT FOUND"))
-			{
- 				System.out.println("NOT FOUND");
-			}
- 			//look for byte length
- 			else if(responseString.contains("200 OK"))
- 			{
-	 			if (responseString.contains("Accept-Ranges: bytes"))
-	 			{
-	 				//parse response to get content length
-	 				String[] responses = responseString.split("\n", 8);
-	 				//loop through the response lines
-		 			for (String line : responses) 
-		 			{
-			 			if (line.contains("Content-Length:"))
-			 			{
-			 				//Find the length of the file in bytes
-			 				String[] content = line.split(": ", 2);
-			 				//remove last character to get just the numbers
-			 				String length = content[1].substring(0, content[1].length()-1);
-			 				//convert from string to integer
-			 				contentLength = Integer.parseInt(length);
-			 			}
-		 			}
-	 			}
- 			}
- 			//does not support range request
- 			else
- 			{
-	 			System.out.println("Server does not support range requests.");
-	 			System.exit(0);
- 			}
- 			socket.close();
-		} 
-		catch (IOException e) 
-		{
-			System.out.println("error");
-		}	
-		
-		//calculate start and end 
-		String rangeStart = "0";
-		String rangeEnd = (contentLength - 1) + "";
-		
-		//set up range request
-		requestLine_1 = "GET " + pathname + " HTTP/1.1\r\n";
-		requestLine_2 = "Host: " + host + "\r\n";
-		String requestLine_3 = "Range: " + "bytes=" + rangeStart + "-" + rangeEnd + "\r\n";
-		eoh_line = "\r\n"; 
-
-		//use socket to communicate
-		try 
-		{
-			Socket socket = new Socket(host, port);
-			
-			//send range request
-			String http_header = requestLine_1 + requestLine_2 + requestLine_3 + eoh_line;
-			byte[] http_header_in_bytes = http_header.getBytes("US-ASCII");
-			socket.getOutputStream().write(http_header_in_bytes);
- 			socket.getOutputStream().flush();
-			
- 			//read response
- 			byte[] responseBytes = new byte[32*2048];
- 			byte[] webObject = new byte[32*2048];
- 			
- 			//create file directory
- 			File file = new File(host + "/" + pathname);
-			file.getParentFile().mkdirs();
-			FileOutputStream outStream = new FileOutputStream(file);
- 			
- 			
- 			
- 			String response = "";
- 			
- 			//read response
- 			
- 			int totalHeaderBytes = 0;
- 			//first read the header
- 			while(!reachedEndOfHeader(response))
- 			{
- 				//keep reading in bytes until you reached the end of the header
-				socket.getInputStream().read(responseBytes, totalHeaderBytes, 1);
-				//keep track of how many bytes read thus far
-				totalHeaderBytes += 1;
-				//response is converted to a string so we can look for the end of the header
-				response = new String(responseBytes, 0, totalHeaderBytes,"US-ASCII");
-			}
- 
- 			int totalObjectBytes = 0;
- 			int numberOfBytes = 0;
- 			//next write the object to file
- 			while((totalObjectBytes != contentLength))
- 			{
- 				//keep reading until all bytes have been read
-				numberOfBytes = socket.getInputStream().read(webObject);
-				//write bytes to file
-				outStream.write(webObject, 0, numberOfBytes);
-				//keep track of how many bytes read thus far
-				totalObjectBytes += numberOfBytes;
-			}
- 			outStream.flush();
-		} 
-		catch (IOException e) 
-		{
-			System.out.println("Error");
-		}
-	}
-
-	/*
-	 * This method checks if you have reached the end of the header
-	 */
-	private boolean reachedEndOfHeader(String response) 
-	{
-		return response.contains("\r\n\r\n") ? true : false;
+		//download file
+		FileDownloader http = new FileDownloader();
+		http.download(pathname, host, contentLength, socket);
 	}
 }
