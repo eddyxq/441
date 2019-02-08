@@ -9,7 +9,7 @@ public class HeadRequest
 	{
 		//set up head request
 		String requestLine_1 = "HEAD " + pathname + " HTTP/1.1\r\n";
-		String requestLine_2 = "Host: " + host + "\r\n";
+		String requestLine_2 = "Host: " + host + ":" + port + "\r\n";
 		String eoh_line = "\r\n";
 		
 		//initialize content length

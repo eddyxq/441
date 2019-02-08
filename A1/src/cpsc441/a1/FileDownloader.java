@@ -9,23 +9,24 @@ public class FileDownloader
 {
 	public void download(String pathname, String host, int contentLength, Socket socket)
 	{
-			readHeader(pathname, host, socket);
-			writeObject(pathname, host, contentLength, socket);	
-	}
-
-	//this method will read in the header 
-	public void readHeader(String pathname, String host, Socket socket) 
-	{
+		//initialize arrays to store bytes
+		byte[] responseBytes = new byte[32*2048];
+		byte[] webObject = new byte[32*2048];
+		
 		try 
 		{
-			byte[] responseBytes = new byte[32*2048];
+			//extract file name from the end of the url
+			String[] urlParts = pathname.split("/");
+			String filename = urlParts[urlParts.length-1];
 			
+			//create file 
+			FileOutputStream outStream = new FileOutputStream(new File(filename));
 			
+			//initialize response string
 			String response = "";
-			//read response
 			int totalHeaderBytes = 0;
-			//first read the header
-			while(!reachedEndOfHeader(response))
+			//read the header
+			while(!response.contains("\r\n\r\n"))
 			{
 				//keep reading in bytes until you reached the end of the header
 				socket.getInputStream().read(responseBytes, totalHeaderBytes, 1);
@@ -34,27 +35,10 @@ public class FileDownloader
 				//response is converted to a string so we can look for the end of the header
 				response = new String(responseBytes, 0, totalHeaderBytes,"US-ASCII");
 			}
-		}
-		catch (IOException e) 
-		{
-			System.out.println("Header read error");
-		}
-	}
 	
-	//this method will read in the payload
-	public void writeObject(String pathname, String host, int contentLength, Socket socket)
-	{
-		try 
-		{
-			//create file directory
-			File file = new File(host + "/" + pathname);
-			file.getParentFile().mkdirs();
-			FileOutputStream outStream = new FileOutputStream(file);
-			
-			byte[] webObject = new byte[32*2048];
 			int totalObjectBytes = 0;
 			int numberOfBytes = 0;
-			//next write the object to file
+			//read the payload
 			while((totalObjectBytes != contentLength))
 			{
 				//keep reading until all bytes have been read
@@ -69,13 +53,7 @@ public class FileDownloader
 		}
 		catch (IOException e) 
 		{
-			System.out.println("Object writting error");
+			System.out.println("Download Error");
 		}
 	}
-	
-	//this method returns true if you have reached end of header
-	private boolean reachedEndOfHeader(String response) 
-	{
-		return response.contains("\r\n\r\n") ? true : false;
-	}	
 }

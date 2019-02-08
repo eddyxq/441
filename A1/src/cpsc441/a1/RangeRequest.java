@@ -13,7 +13,7 @@ public class RangeRequest
 		
 		//set up range request
 		String requestLine_1 = "GET " + pathname + " HTTP/1.1\r\n";
-		String requestLine_2 = "Host: " + host + "\r\n";
+		String requestLine_2 = "Host: " + host + ":" + port + "\r\n";
 		String requestLine_3 = "Range: " + "bytes=" + rangeStart + "-" + rangeEnd + "\r\n";
 		String eoh_line = "\r\n"; 
 
