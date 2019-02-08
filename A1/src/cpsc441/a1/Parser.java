@@ -9,9 +9,6 @@ public class Parser
 		
 		//split url and its file path
 		String [] parts = url.split("/", 2);
-		
-		
-		
 		String [] hostandport;
 		String host;
 		String port;
@@ -44,9 +41,8 @@ public class Parser
 			//file path is the second part in url
 			filepath = "/" + parts[1];
 		}
-		
+		//store results in an array to be returned
 		String[] parsedResults = {host, port, filepath};
-		
 		return parsedResults;
 	}
 }

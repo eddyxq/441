@@ -15,9 +15,9 @@ public class HeadRequest
 		//initialize content length
 		int contentLength = 0;
 		
-		//use socket to communicate
 		try 
 		{
+			//open socket for communication
 			Socket socket = new Socket(host, port);
  		
 			//send head request
@@ -36,7 +36,7 @@ public class HeadRequest
 			{
  				System.out.println("NOT FOUND");
 			}
- 			//look for byte length
+ 			//look for range length
  			else if(responseString.contains("200 OK"))
  			{
 	 			if (responseString.contains("Accept-Ranges: bytes"))

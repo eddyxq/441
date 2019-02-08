@@ -12,6 +12,7 @@ public class concurrentConnection implements Runnable
 	String pathname;
 	int contentLength;
 	
+	//this constructor initializes all the fields
 	public concurrentConnection(String host, int port, String pathname, String s, int start, int offSet, int contentLength)
 	{
 		this.URL = s;
@@ -23,10 +24,11 @@ public class concurrentConnection implements Runnable
 		this.contentLength = contentLength;
 	}
 	
+	//this method executes when a thread is started
 	public void run()
 	{
 		//send range request
-		Socket socket = new RangeRequest().send(pathname, port, host, contentLength);
+		Socket socket = new RangeRequest().send(pathname, port, host, contentLength, start, offSet);
 		
 		//download file
 		FileDownloader http = new FileDownloader();

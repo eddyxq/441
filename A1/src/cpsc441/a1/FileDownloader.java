@@ -10,8 +10,9 @@ public class FileDownloader
 	public void download(String pathname, String host, int contentLength, Socket socket, int start, int offSet)
 	{
 		//initialize arrays to store bytes
-		byte[] responseBytes = new byte[32*2048];
-		byte[] webObject = new byte[32*2048];
+		//size of array was arbitrarily chosen
+		byte[] responseBytes = new byte[2048*2048];
+		byte[] webObject = new byte[2048*2048];
 		
 		try 
 		{
@@ -20,12 +21,13 @@ public class FileDownloader
 			String filename = urlParts[urlParts.length-1];
 			
 			//create file 
-			FileOutputStream outStream = new FileOutputStream(new File(filename));
+			FileOutputStream outStream = new FileOutputStream(new File(filename), true);
 			
 			//initialize response string
 			String response = "";
+			
 			int totalHeaderBytes = 0;
-			//read the header
+			//read the head
 			while(!response.contains("\r\n\r\n"))
 			{
 				//keep reading in bytes until you reached the end of the header
@@ -36,17 +38,17 @@ public class FileDownloader
 				response = new String(responseBytes, 0, totalHeaderBytes,"US-ASCII");
 			}
 	
-			int totalObjectBytes = 0;
+			int counter = 0;
 			int numberOfBytes = 0;
-			//read the payload
-			while((totalObjectBytes != contentLength))
+			//read the body
+			while((counter != contentLength))
 			{
 				//keep reading until all bytes have been read
 				numberOfBytes = socket.getInputStream().read(webObject);
 				//write bytes to file
 				outStream.write(webObject, 0, numberOfBytes);
 				//keep track of how many bytes read thus far
-				totalObjectBytes += numberOfBytes;
+				counter += numberOfBytes;
 			}
 			outStream.flush();
 			outStream.close();

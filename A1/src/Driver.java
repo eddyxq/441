@@ -37,7 +37,6 @@ public class Driver {
 		System.out.printf("url: %s\n", url);
 		System.out.printf("conn: %d\n", conn);
 		
-		
 		quick.setConn(conn);
 		quick.getObject(url);
 		
