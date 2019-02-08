@@ -3,8 +3,18 @@ package cpsc441.a1;
 import java.io.IOException;
 import java.net.Socket;
 
+/*
+ * This class is used to send head requests
+ */
+
 public class HeadRequest 
 {
+	/*
+	 * This method will return the content length specified from the head request
+	 * @param pathname The path name
+	 * @param port The port number
+	 * @param host The host name
+	 */
 	public int getContentLength(String pathname, int port, String host) 
 	{
 		//set up head request

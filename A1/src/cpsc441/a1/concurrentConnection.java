@@ -2,6 +2,10 @@ package cpsc441.a1;
 
 import java.net.Socket;
 
+/*
+ * This class creates a connection
+ */
+
 public class concurrentConnection implements Runnable 
 {
 	String URL;
@@ -12,7 +16,16 @@ public class concurrentConnection implements Runnable
 	String pathname;
 	int contentLength;
 	
-	//this constructor initializes all the fields
+	/*
+	 * This constructor initializes all the fields
+	 * @param host The host name
+	 * @param port The port number
+	 * @param pathname The path name
+	 * @param s The URL 
+	 * @param start The starting index
+	 * @param offSet The index offset
+	 * @param contentLength The size of object
+	 */
 	public concurrentConnection(String host, int port, String pathname, String s, int start, int offSet, int contentLength)
 	{
 		this.URL = s;
@@ -24,7 +37,9 @@ public class concurrentConnection implements Runnable
 		this.contentLength = contentLength;
 	}
 	
-	//this method executes when a thread is started
+	/*
+	 * This method executes when a thread is started
+	 */
 	public void run()
 	{
 		//send range request

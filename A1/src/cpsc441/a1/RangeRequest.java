@@ -3,8 +3,21 @@ package cpsc441.a1;
 import java.io.IOException;
 import java.net.Socket;
 
+/*
+ * This class is used to send range requests
+ */
+
 public class RangeRequest 
 {
+	/*
+	 * This method will send a range request and return the socket
+	 * @param pathname The path name
+	 * @param port The port number
+	 * @param host The host name
+	 * @param contentLength The size of the object
+	 * @param start The starting index
+	 * @param offSet The index offset
+	 */
 	public Socket send(String pathname, int port, String host, int contentLength, int start, int offSet)
 	{		
 		Socket socket = null;
@@ -32,4 +45,3 @@ public class RangeRequest
 		return socket;
 	}
 }
-

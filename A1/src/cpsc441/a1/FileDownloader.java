@@ -5,8 +5,20 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.Socket;
 
+/*
+ * This class is used to download objects
+ */
+
 public class FileDownloader 
 {
+	/*
+	 * This method will download bytes and write to file
+	 * @param pathname The path name
+	 * @param host The host name
+	 * @param contentLength The size of object
+	 * @param start The starting index
+	 * @param offSet The index offset
+	 */
 	public void download(String pathname, String host, int contentLength, Socket socket, int start, int offSet)
 	{
 		//initialize arrays to store bytes
