@@ -1,10 +1,5 @@
 package cpsc441.a1;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.net.Socket;
-
 public class Parser 
 {
 	public String[] parseURL(String s) 

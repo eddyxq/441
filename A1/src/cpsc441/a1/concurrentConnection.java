@@ -5,28 +5,31 @@ import java.net.Socket;
 public class concurrentConnection implements Runnable 
 {
 	String URL;
+	int start;
+	int offSet;
+	String host;
+	int port;
+	String pathname;
+	int contentLength;
 	
-	public concurrentConnection(String s)
+	public concurrentConnection(String host, int port, String pathname, String s, int start, int offSet, int contentLength)
 	{
-		URL = s;
+		this.URL = s;
+		this.start = start;
+		this.offSet = offSet;
+		this.host = host;
+		this.port = port;
+		this.pathname = pathname;
+		this.contentLength = contentLength;
 	}
 	
 	public void run()
 	{
-		//parse URL into host, port, and pathname
-		String[] parsedURL = new Parser().parseURL(URL);
-		String host = parsedURL[0];
-		int port = Integer.parseInt(parsedURL[1]);
-		String pathname = parsedURL[2];
-		
-		//send head request
-		int contentLength = new HeadRequest().getContentLength(pathname, port, host);
-		
 		//send range request
 		Socket socket = new RangeRequest().send(pathname, port, host, contentLength);
 		
 		//download file
 		FileDownloader http = new FileDownloader();
-		http.download(pathname, host, contentLength, socket);
+		http.download(pathname, host, contentLength, socket, start, offSet);
 	}
 }

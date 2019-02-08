@@ -7,7 +7,7 @@ import java.net.Socket;
 
 public class FileDownloader 
 {
-	public void download(String pathname, String host, int contentLength, Socket socket)
+	public void download(String pathname, String host, int contentLength, Socket socket, int start, int offSet)
 	{
 		//initialize arrays to store bytes
 		byte[] responseBytes = new byte[32*2048];
