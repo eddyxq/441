@@ -70,8 +70,8 @@ public class QuickUrl extends ConcurrentHttp
 		}
 		else
 		{
-			System.out.println("File Already Exist");
-			System.out.println("Remove existing file and run program again");
+			System.out.println("File Already Exist or URL is invalid");
+			System.out.println("Remove any existing file and run program again");
 		}
 	}
 	

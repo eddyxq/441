@@ -16,7 +16,19 @@ public class Parser
 		try 
 		{
 			//remove http:// from url string
-			String url = s.replace("http://", "");
+			String url;
+			if (s.contains("https://"))
+			{
+				url = s.replace("https://", "");
+			}
+			else if (s.contains("http://"))
+			{
+				url = s.replace("http://", "");
+			}
+			else
+			{
+				url = s;
+			}
 			
 			//split url and its file path
 			String[] parts = url.split("/", 2);
