@@ -11,7 +11,7 @@
 
 import java.io.*;
 import java.util.*;
-import cpsc441.a2.WebServer;
+import cpsc441.a2.MainServer;
 
 
 public class ServerDriver {
@@ -36,7 +36,7 @@ public class ServerDriver {
 		System.out.println("starting server on port " + serverPort);
 		
 		//create web server
-		WebServer server = new WebServer(serverPort);
+		MainServer server = new MainServer(serverPort);
 		
 		server.start();
 		System.out.println("server started, type \"quit\" to stop");
